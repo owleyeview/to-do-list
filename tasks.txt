@@ -1,0 +1,6 @@
+Make progress,false
+Go to work,false
+Hum,false
+Enjoy life,false
+Share food with friends,false
+Bike home,false

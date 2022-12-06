@@ -1,0 +1,100 @@
+/*
+Rashaan Lightpool
+12/06/2022
+CS 145
+Final Assignment
+ToDoList.java
+ */
+package wcc.cs145.rashaanlightpool.todolist;
+
+import java.io.*;
+import java.util.*;
+
+public class ToDoList {
+    private List<Task> tasks;
+
+    public ToDoList() {
+        this.tasks = new ArrayList<>();
+        loadTasks();
+    }
+
+    // Create a comparator object that compares the isComplete property of two tasks
+    private final Comparator<Task> taskComparator = (t1, t2) -> {
+        if (t1.isComplete() && !t2.isComplete()) {
+            return 1;
+        } else if (!t1.isComplete() && t2.isComplete()) {
+            return -1;
+        } else {
+            return 0;
+        }
+    };
+
+    public void addTask(Task task) {
+        this.tasks.add(task);
+        sortTasks();
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt", true));
+            writer.write(task.toString());
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt"));
+            for (Task t : this.tasks) {
+                writer.write(t.toString());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void markTaskComplete(Task task) {
+        task.setComplete(true);
+        sortTasks();
+    }
+
+    public void sortTasks() {
+        // Sort the tasks using the comparator object
+        tasks.sort(taskComparator);
+    }
+
+    public void loadTasks() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("tasks.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                String description = parts[0];
+                boolean isComplete = Boolean.parseBoolean(parts[1]);
+                this.tasks.add(new Task(description, isComplete));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveTasks() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt"))) {
+            for (Task task : tasks) {
+                String line = task.getDescription() + "," + task.isComplete();
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public List<Task> getTasks() {
+        return this.tasks;
+    }
+}
