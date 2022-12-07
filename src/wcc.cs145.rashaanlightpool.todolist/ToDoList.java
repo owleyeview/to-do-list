@@ -10,9 +10,11 @@ package wcc.cs145.rashaanlightpool.todolist;
 import java.io.*;
 import java.util.*;
 
+
 public class ToDoList {
     private List<Task> tasks;
 
+    // Constructor
     public ToDoList() {
         this.tasks = new ArrayList<>();
         loadTasks();
@@ -29,33 +31,21 @@ public class ToDoList {
         }
     };
 
+    // Given a Task object, it is added to the list of tasks.
+    // I chose BufferedWriter and BufferedReader instead of
+    // Printstream and Scanner because I've learned that they
+    // are more efficient, more powerful and more commonly used.
     public void addTask(Task task) {
         this.tasks.add(task);
         sortTasks();
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt", true));
-            writer.write(task.toString());
-            writer.newLine();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // update the save file
+        saveTasks();
     }
 
     public void removeTask(Task task) {
         this.tasks.remove(task);
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt"));
-            for (Task t : this.tasks) {
-                writer.write(t.toString());
-                writer.newLine();
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //update the save file
+        saveTasks();
     }
 
     public void markTaskComplete(Task task) {
@@ -68,6 +58,7 @@ public class ToDoList {
         tasks.sort(taskComparator);
     }
 
+    // Load tasks from tasks.txt into tasks List
     public void loadTasks() {
         try (BufferedReader reader = new BufferedReader(new FileReader("tasks.txt"))) {
             String line;
@@ -82,6 +73,7 @@ public class ToDoList {
         }
     }
 
+    // Save the tasks List to tasks.txt
     public void saveTasks() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("tasks.txt"))) {
             for (Task task : tasks) {

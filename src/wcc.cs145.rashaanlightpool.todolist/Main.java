@@ -28,6 +28,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         toDoList = new ToDoList();
 
+        // Create the ListView element of the UI
         ListView<Task> taskListView = new ListView<>();
         toDoList.sortTasks();
         for (Task task : toDoList.getTasks()) {
@@ -58,6 +59,7 @@ public class Main extends Application {
             return cell;
         });
 
+        // Create the buttons and text field
         Button addTaskButton = new Button("        Add Task        ");
         Button removeTaskButton = new Button("     Remove Task    ");
         Button markTaskCompleteButton = new Button("Mark Task Complete");
@@ -110,6 +112,7 @@ public class Main extends Application {
         // Handle window close request to save the tasks.
         stage.setOnCloseRequest(event -> toDoList.saveTasks());
 
+        // Organize the UI elements
         HBox buttonContainer = new HBox(addTaskButton, removeTaskButton, markTaskCompleteButton);
         VBox root = new VBox(taskListView, taskDescriptionTextField, buttonContainer);
 

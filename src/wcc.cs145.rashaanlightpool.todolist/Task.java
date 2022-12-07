@@ -7,6 +7,7 @@ Task.java
  */
 package wcc.cs145.rashaanlightpool.todolist;
 
+// Individual task objects to be used in the ToDoList class
 public class Task {
     private final String description;
     private boolean isComplete;
@@ -37,7 +38,7 @@ public class Task {
 
     public String toString() {
         if (isComplete) {
-            return description + ", Complete";
+            return description + ", Complete"; // add 'Complete' to completed tasks
         } else {
             return description;
         }

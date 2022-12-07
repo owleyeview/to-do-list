@@ -4,3 +4,4 @@ Hum,false
 Enjoy life,false
 Share food with friends,false
 Bike home,false
+Create to-do list,true
